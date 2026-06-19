@@ -1,19 +1,58 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { COMPANY } from '../data/operatory';
 import { Phone, MessageCircle, MapPin, Clock, Calendar, Send } from 'lucide-react';
 
-interface ContactTrayProps {
-  progress: number;
-}
+gsap.registerPlugin(ScrollTrigger);
 
-export default function ContactTray({ progress }: ContactTrayProps) {
+export default function ContactTray() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const trayRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState({ name: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
-  // Show contact tray at final 10% of scroll, fixed center
-  const visible = progress > 0.82;
-  const opacity = Math.max(0, Math.min(1, (progress - 0.82) / 0.1));
-  const scale = 0.8 + opacity * 0.2;
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const tray = trayRef.current;
+    if (!wrapper || !tray) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        wrapper,
+        { opacity: 0, pointerEvents: 'none' },
+        {
+          opacity: 1,
+          pointerEvents: 'auto',
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: document.body,
+            start: '82% top',
+            end: '95% top',
+            scrub: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        tray,
+        { scale: 0.8, y: 40 },
+        {
+          scale: 1,
+          y: 0,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: document.body,
+            start: '82% top',
+            end: '95% top',
+            scrub: true,
+          },
+        }
+      );
+    }, wrapper);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,12 +62,13 @@ export default function ContactTray({ progress }: ContactTrayProps) {
 
   return (
     <div
-      className="fixed inset-0 z-30 flex items-center justify-center p-4 pointer-events-none"
-      style={{ opacity, pointerEvents: visible ? 'auto' : 'none' }}
+      ref={wrapperRef}
+      className="fixed inset-0 z-30 flex items-center justify-center p-4"
+      style={{ opacity: 0, pointerEvents: 'none' }}
     >
       <div
+        ref={trayRef}
         className="contact-tray w-full max-w-[900px] p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-8"
-        style={{ transform: `scale(${scale})`, transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
       >
         {/* Left: Contact info */}
         <div>

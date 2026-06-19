@@ -186,9 +186,24 @@
     box-shadow: 0 20px 60px var(--shadow-color), 0 0 0 1px rgba(var(--accent-color-rgb), 0.08) inset;
   }
 
+  .chair-face-solid {
+    background-color: var(--surface-elevated);
+    background-image: none;
+  }
+
+  .chair-face-side {
+    background-color: rgba(var(--accent-color-rgb), 0.12);
+    background-image: none;
+  }
+
   .xray .chair-face {
     filter: invert(1) contrast(1.2) saturate(0) brightness(0.9);
     box-shadow: 0 0 30px var(--glow-color), 0 0 0 1px var(--accent-color) inset;
+  }
+
+  .part-label {
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    opacity: 0;
   }
 
   /* X-ray blueprint grid overlay */
@@ -359,9 +374,15 @@
     box-shadow: 0 0 60px var(--glow-color);
   }
 
+  /* Operatory fixed stage background */
+  .operatory-bg {
+    background-color: var(--bg-page);
+    transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   /* Scroll track */
   .scroll-track {
-    height: 600vh;
+    height: 450vh;
     position: relative;
   }
 

@@ -1,5 +1,6 @@
-import { useScrollProgress } from '../hooks/useScrollProgress';
-import { useGyroscope } from '../hooks/useGyroscope';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { COMPANY, STATS, TRUST_SIGNALS } from '../data/operatory';
 import ChairAssembly from './chair/ChairAssembly';
 import Timeline from './Timeline';
@@ -7,53 +8,242 @@ import PrecisionMarquee from './PrecisionMarquee';
 import ContactTray from './ContactTray';
 import { Phone, MessageCircle } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function OperatoryExperience() {
-  const progress = useScrollProgress();
-  const { gamma } = useGyroscope();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const explosionCopyRef = useRef<HTMLDivElement>(null);
+  const reassemblyCopyRef = useRef<HTMLDivElement>(null);
+  const statsLeftRef = useRef<HTMLDivElement>(null);
+  const statsRightRef = useRef<HTMLDivElement>(null);
+  const trustSignalsRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
-  // Headline reveal phases
-  const showCompany = progress < 0.15;
-  const showHeadline = progress >= 0.08 && progress < 0.35;
-  const showExplosionCopy = progress >= 0.30 && progress < 0.70;
-  const showReassemblyCopy = progress >= 0.78;
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero fades out by 15%
+      gsap.fromTo(
+        heroRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '5% top',
+            end: '20% top',
+            scrub: true,
+          },
+        }
+      );
 
-  // Background gradient shift with scroll
-  const bgOpacity = 0.3 + progress * 0.4;
+      // Scroll headline fades in 8-25%, out 25-40%
+      gsap.fromTo(
+        headlineRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '8% top',
+            end: '20% top',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(
+        headlineRef.current,
+        { opacity: 1, y: 0 },
+        {
+          opacity: 0,
+          y: -30,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '25% top',
+            end: '40% top',
+            scrub: true,
+          },
+        }
+      );
+
+      // Explosion copy in/out
+      gsap.fromTo(
+        explosionCopyRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '30% top',
+            end: '42% top',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(
+        explosionCopyRef.current,
+        { opacity: 1, y: 0 },
+        {
+          opacity: 0,
+          y: -20,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '55% top',
+            end: '70% top',
+            scrub: true,
+          },
+        }
+      );
+
+      // Reassembly copy in
+      gsap.fromTo(
+        reassemblyCopyRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '78% top',
+            end: '90% top',
+            scrub: true,
+          },
+        }
+      );
+
+      // Floating stats labels
+      gsap.fromTo(
+        statsLeftRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '35% top',
+            end: '45% top',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(
+        statsLeftRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '75% top',
+            end: '85% top',
+            scrub: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        statsRightRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '45% top',
+            end: '55% top',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(
+        statsRightRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '80% top',
+            end: '90% top',
+            scrub: true,
+          },
+        }
+      );
+
+      // Trust signals
+      gsap.fromTo(
+        trustSignalsRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '50% top',
+            end: '60% top',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(
+        trustSignalsRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '80% top',
+            end: '90% top',
+            scrub: true,
+          },
+        }
+      );
+
+      // CTA buttons fade out at end
+      gsap.fromTo(
+        ctaRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '70% top',
+            end: '85% top',
+            scrub: true,
+          },
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       {/* Scroll track */}
       <div className="scroll-track" />
 
       {/* Fixed viewport stage */}
-      <div
-        className="fixed inset-0 w-full h-dvh overflow-hidden"
-        style={{
-          background: `radial-gradient(ellipse at 50% 50%, rgba(var(--accent-color-rgb), ${bgOpacity * 0.15}) 0%, var(--bg-page) 70%)`,
-        }}
-      >
-        {/* Grid overlay for X-ray / technical feel */}
+      <div className="fixed inset-0 w-full h-dvh overflow-hidden operatory-bg isolate">
+        {/* Subtle vignette for readability */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-30"
+          className="absolute inset-0 pointer-events-none z-[1]"
           style={{
-            backgroundImage: `linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px',
+            background: 'radial-gradient(ellipse at 50% 40%, transparent 0%, var(--bg-page) 85%)',
           }}
         />
 
         {/* Chair */}
-        <ChairAssembly scrollProgress={progress} gyroGamma={gamma} />
+        <ChairAssembly />
 
         {/* Timeline on the left */}
-        <Timeline progress={progress} />
+        <Timeline />
 
         {/* Precision marquee */}
         <PrecisionMarquee />
 
-        {/* Hero headline - behind headrest, revealed at 15% */}
+        {/* Hero headline */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-center z-0 transition-opacity duration-700"
-          style={{ opacity: showCompany ? 1 - progress / 0.15 : 0 }}
+          ref={heroRef}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-center z-10"
         >
           <h1 className="font-display text-[clamp(2.5rem,14vw,9rem)] leading-[0.9] tracking-[-0.03em] text-gradient">
             {COMPANY.name}
@@ -67,13 +257,13 @@ export default function OperatoryExperience() {
 
         {/* Scroll-triggered headline */}
         <div
-          className="absolute top-[15%] left-0 right-0 px-6 md:px-[8vw] text-center md:text-left pointer-events-none z-10 transition-opacity duration-700"
-          style={{ opacity: showHeadline ? 1 : 0 }}
+          ref={headlineRef}
+          className="absolute top-[15%] left-0 right-0 px-6 md:px-[8vw] text-center md:text-left pointer-events-none z-10"
         >
           <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
             Moradabad · Since 2000
           </p>
-          <h2 className="font-display text-[clamp(1.5rem,5vw,4rem)] leading-[1.1] max-w-[700px] mx-auto md:mx-0 text-[var(--text-primary)]">
+          <h2 className="font-display text-[clamp(1.5rem,5vw,4rem)] leading-[1.1] max-w-[700px] mx-auto md:mx-0 text-[var(--text-primary)] drop-shadow-sm">
             {COMPANY.headline}
           </h2>
           <p className="font-body text-sm md:text-base text-[var(--text-secondary)] max-w-[500px] mt-4 mx-auto md:mx-0">
@@ -83,48 +273,48 @@ export default function OperatoryExperience() {
 
         {/* Explosion copy */}
         <div
-          className="absolute top-[12%] left-0 right-0 px-6 md:px-[8vw] text-center pointer-events-none z-10 transition-opacity duration-700"
-          style={{ opacity: showExplosionCopy ? 1 : 0 }}
+          ref={explosionCopyRef}
+          className="absolute top-[12%] left-0 right-0 px-6 md:px-[8vw] text-center pointer-events-none z-10"
         >
           <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
             Exploded View
           </p>
-          <h2 className="font-display text-[clamp(1.4rem,4vw,3rem)] leading-[1.15] max-w-[600px] mx-auto text-[var(--text-primary)]">
+          <h2 className="font-display text-[clamp(1.4rem,4vw,3rem)] leading-[1.15] max-w-[600px] mx-auto text-[var(--text-primary)] drop-shadow-sm">
             Every product category was inside the chair the whole time.
           </h2>
         </div>
 
         {/* Reassembly / contact copy */}
         <div
-          className="absolute top-[12%] left-0 right-0 px-6 md:px-[8vw] text-center pointer-events-none z-10 transition-opacity duration-700"
-          style={{ opacity: showReassemblyCopy ? 1 : 0 }}
+          ref={reassemblyCopyRef}
+          className="absolute top-[12%] left-0 right-0 px-6 md:px-[8vw] text-center pointer-events-none z-10"
         >
           <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
             Reassembly Complete
           </p>
-          <h2 className="font-display text-[clamp(1.4rem,4vw,3rem)] leading-[1.15] max-w-[600px] mx-auto text-[var(--text-primary)]">
+          <h2 className="font-display text-[clamp(1.4rem,4vw,3rem)] leading-[1.15] max-w-[600px] mx-auto text-[var(--text-primary)] drop-shadow-sm">
             Ready to equip your practice?
           </h2>
         </div>
 
         {/* Floating stats labels */}
         <div
-          className="absolute bottom-[18%] left-[8%] pointer-events-none hidden lg:block"
-          style={{ opacity: progress > 0.35 && progress < 0.85 ? 1 : 0, transition: 'opacity 0.5s ease' }}
+          ref={statsLeftRef}
+          className="absolute bottom-[18%] left-[8%] pointer-events-none hidden lg:block z-10"
         >
           <div className="holo-label">{STATS[0].value}{STATS[0].suffix} {STATS[0].label}</div>
         </div>
         <div
-          className="absolute bottom-[28%] right-[10%] pointer-events-none hidden lg:block"
-          style={{ opacity: progress > 0.45 && progress < 0.85 ? 1 : 0, transition: 'opacity 0.5s ease' }}
+          ref={statsRightRef}
+          className="absolute bottom-[28%] right-[10%] pointer-events-none hidden lg:block z-10"
         >
           <div className="holo-label">{STATS[1].value}{STATS[1].suffix} {STATS[1].label}</div>
         </div>
 
         {/* Trust signals band */}
         <div
-          className="absolute bottom-8 left-0 right-0 flex flex-wrap justify-center gap-4 md:gap-8 px-4 pointer-events-none"
-          style={{ opacity: progress > 0.5 && progress < 0.85 ? 1 : 0, transition: 'opacity 0.5s ease' }}
+          ref={trustSignalsRef}
+          className="absolute bottom-8 left-0 right-0 flex flex-wrap justify-center gap-4 md:gap-8 px-4 pointer-events-none z-10"
         >
           {TRUST_SIGNALS.map((signal, i) => (
             <div key={signal} className="flex items-center gap-2">
@@ -138,8 +328,8 @@ export default function OperatoryExperience() {
 
         {/* Fixed CTA buttons */}
         <div
+          ref={ctaRef}
           className="absolute bottom-8 right-8 hidden md:flex flex-col gap-3 pointer-events-auto z-50"
-          style={{ opacity: progress < 0.75 ? 1 : 0, transition: 'opacity 0.5s ease' }}
         >
           <a
             href={`tel:${COMPANY.phone}`}
@@ -161,7 +351,7 @@ export default function OperatoryExperience() {
       </div>
 
       {/* Contact tray - appears at final scroll phase */}
-      <ContactTray progress={progress} />
+      <ContactTray />
     </div>
   );
 }
