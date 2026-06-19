@@ -1,13 +1,8 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function PrecisionMarquee() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const velocityRef = useRef(0);
 
   useEffect(() => {
     const text = textRef.current;
@@ -28,11 +23,10 @@ export default function PrecisionMarquee() {
         const currentScroll = window.scrollY || document.documentElement.scrollTop;
         const delta = currentScroll - lastScroll;
         const rawVelocity = delta / dt;
-        decay = decay * 0.85 + rawVelocity * 0.15;
-        velocityRef.current = decay;
+        decay = decay * 0.88 + rawVelocity * 0.12;
 
-        const scaleX = Math.max(0.7, Math.min(1.3, 1 - decay * 0.15));
-        const skewX = Math.max(-8, Math.min(8, decay * 2));
+        const scaleX = Math.max(0.85, Math.min(1.15, 1 - decay * 0.12));
+        const skewX = Math.max(-6, Math.min(6, decay * 1.5));
         setScaleX(scaleX);
         setSkewX(skewX);
 
@@ -50,18 +44,11 @@ export default function PrecisionMarquee() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed top-1/2 left-0 right-0 -translate-y-1/2 z-0 pointer-events-none overflow-hidden opacity-15"
-    >
+    <div className="fixed top-1/2 left-0 right-0 -translate-y-1/2 z-0 pointer-events-none overflow-hidden opacity-[0.07]">
       <div
         ref={textRef}
         className="precision-marquee flex justify-center"
       >
-        <span className="px-8">
-          Precision engineered for the dentist who accepts nothing less than perfection
-        </span>
-        <span className="px-8 opacity-50">·</span>
         <span className="px-8">
           Precision engineered for the dentist who accepts nothing less than perfection
         </span>

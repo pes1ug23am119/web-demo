@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Timeline() {
   const lineRef = useRef<SVGLineElement>(null);
   const nodeRef = useRef<SVGCircleElement>(null);
+  const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,22 +46,40 @@ export default function Timeline() {
           }
         );
       }
+
+      labelRefs.current.forEach((label, i) => {
+        if (!label) return;
+        const progress = TIMELINE[i].progress;
+        gsap.fromTo(
+          label,
+          { opacity: 0.35, color: 'var(--text-secondary)' },
+          {
+            opacity: 1,
+            color: 'var(--accent-color)',
+            textShadow: '0 0 12px var(--glow-color)',
+            scrollTrigger: {
+              trigger: document.body,
+              start: `${10 + progress * 70}% top`,
+              end: `${20 + progress * 70}% top`,
+              scrub: true,
+            },
+          }
+        );
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="fixed left-4 md:left-8 top-1/2 -translate-y-1/2 h-[60vh] w-12 md:w-16 z-20 pointer-events-none hidden sm:flex flex-col items-center">
+    <div ref={containerRef} className="fixed left-3 md:left-6 top-1/2 -translate-y-1/2 h-[55vh] w-10 md:w-14 z-20 pointer-events-none hidden sm:flex flex-col items-center">
       <svg
         className="h-full w-full"
         viewBox="0 0 40 400"
         preserveAspectRatio="none"
         style={{ overflow: 'visible' }}
       >
-        {/* Background line */}
         <line x1="20" y1="0" x2="20" y2="400" className="timeline-line" />
-        {/* Glowing progress line */}
         <line
           ref={lineRef}
           x1="20"
@@ -73,29 +92,25 @@ export default function Timeline() {
           strokeDashoffset="400"
           style={{ filter: 'drop-shadow(0 0 6px var(--glow-color))' }}
         />
-        {/* Traveling node */}
         <circle
           ref={nodeRef}
           cx="20"
           cy="0"
-          r="6"
+          r="5"
           className="timeline-node"
         />
       </svg>
 
-      {/* Year labels */}
       <div className="absolute inset-0 flex flex-col justify-between py-2">
-        {TIMELINE.map((event) => (
+        {TIMELINE.map((event, i) => (
           <div
             key={event.year}
-            className="absolute left-8 md:left-10"
+            ref={(el) => { labelRefs.current[i] = el; }}
+            className="absolute left-7 md:left-9"
             style={{ top: `${event.progress * 100}%`, transform: 'translateY(-50%)' }}
           >
-            <div className="font-mono text-xs md:text-sm font-bold tracking-wider text-[var(--text-secondary)] timeline-year-label">
+            <div className="font-mono text-[11px] md:text-xs font-bold tracking-wider">
               {event.year}
-            </div>
-            <div className="font-body text-[10px] md:text-xs text-[var(--text-secondary)] mt-0.5 max-w-[140px] opacity-60">
-              {event.label}
             </div>
           </div>
         ))}

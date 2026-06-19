@@ -31,12 +31,12 @@
     --radius: 0.625rem;
 
     /* Semantic colors */
-    --bg-page: #f8f9fa;
-    --bg-page-rgb: 248, 249, 250;
-    --text-primary: #1a1a1a;
-    --text-secondary: rgba(26, 26, 26, 0.6);
-    --accent-color: #0d9488;
-    --accent-color-rgb: 13, 148, 136;
+    --bg-page: #f3f5f7;
+    --bg-page-rgb: 243, 245, 247;
+    --text-primary: #0f1115;
+    --text-secondary: rgba(15, 17, 21, 0.58);
+    --accent-color: #0a7a70;
+    --accent-color-rgb: 10, 122, 112;
     --shadow-color: rgba(0, 0, 0, 0.08);
     --glow-color: rgba(13, 148, 136, 0.25);
     --surface: #ffffff;
@@ -283,6 +283,22 @@
   }
 
   /* X-ray toggle button */
+  .text-card {
+    background: rgba(var(--bg-page-rgb), 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(var(--accent-color-rgb), 0.12);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+  }
+
+  .xray .text-card {
+    background: rgba(5, 10, 20, 0.78);
+    border-color: rgba(0, 212, 255, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  }
+
   .xray-toggle {
     position: fixed;
     bottom: 24px;

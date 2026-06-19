@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { COMPANY, STATS, TRUST_SIGNALS } from '../data/operatory';
+import { COMPANY } from '../data/operatory';
 import ChairAssembly from './chair/ChairAssembly';
 import Timeline from './Timeline';
 import PrecisionMarquee from './PrecisionMarquee';
 import ContactTray from './ContactTray';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone, MessageCircle, ChevronDown } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,19 +16,18 @@ export default function OperatoryExperience() {
   const headlineRef = useRef<HTMLDivElement>(null);
   const explosionCopyRef = useRef<HTMLDivElement>(null);
   const reassemblyCopyRef = useRef<HTMLDivElement>(null);
-  const statsLeftRef = useRef<HTMLDivElement>(null);
-  const statsRightRef = useRef<HTMLDivElement>(null);
-  const trustSignalsRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero fades out by 15%
+      // Hero fades out by 18%
       gsap.fromTo(
         heroRef.current,
-        { opacity: 1 },
+        { opacity: 1, y: 0 },
         {
           opacity: 0,
+          y: -30,
           scrollTrigger: {
             trigger: document.body,
             start: '5% top',
@@ -38,17 +37,33 @@ export default function OperatoryExperience() {
         }
       );
 
-      // Scroll headline fades in 8-25%, out 25-40%
+      // Scroll hint fades out quickly
+      gsap.fromTo(
+        scrollHintRef.current,
+        { opacity: 0.6, y: 0 },
+        {
+          opacity: 0,
+          y: 20,
+          scrollTrigger: {
+            trigger: document.body,
+            start: '2% top',
+            end: '12% top',
+            scrub: true,
+          },
+        }
+      );
+
+      // Headline fades in 10-22%, out 35-48%
       gsap.fromTo(
         headlineRef.current,
-        { opacity: 0, y: 30 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
           scrollTrigger: {
             trigger: document.body,
-            start: '8% top',
-            end: '20% top',
+            start: '10% top',
+            end: '22% top',
             scrub: true,
           },
         }
@@ -58,11 +73,11 @@ export default function OperatoryExperience() {
         { opacity: 1, y: 0 },
         {
           opacity: 0,
-          y: -30,
+          y: -40,
           scrollTrigger: {
             trigger: document.body,
-            start: '25% top',
-            end: '40% top',
+            start: '35% top',
+            end: '48% top',
             scrub: true,
           },
         }
@@ -71,14 +86,14 @@ export default function OperatoryExperience() {
       // Explosion copy in/out
       gsap.fromTo(
         explosionCopyRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
           scrollTrigger: {
             trigger: document.body,
-            start: '30% top',
-            end: '42% top',
+            start: '32% top',
+            end: '44% top',
             scrub: true,
           },
         }
@@ -88,11 +103,11 @@ export default function OperatoryExperience() {
         { opacity: 1, y: 0 },
         {
           opacity: 0,
-          y: -20,
+          y: -40,
           scrollTrigger: {
             trigger: document.body,
             start: '55% top',
-            end: '70% top',
+            end: '68% top',
             scrub: true,
           },
         }
@@ -101,103 +116,20 @@ export default function OperatoryExperience() {
       // Reassembly copy in
       gsap.fromTo(
         reassemblyCopyRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
           scrollTrigger: {
             trigger: document.body,
             start: '78% top',
-            end: '90% top',
+            end: '88% top',
             scrub: true,
           },
         }
       );
 
-      // Floating stats labels
-      gsap.fromTo(
-        statsLeftRef.current,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          scrollTrigger: {
-            trigger: document.body,
-            start: '35% top',
-            end: '45% top',
-            scrub: true,
-          },
-        }
-      );
-      gsap.fromTo(
-        statsLeftRef.current,
-        { opacity: 1 },
-        {
-          opacity: 0,
-          scrollTrigger: {
-            trigger: document.body,
-            start: '75% top',
-            end: '85% top',
-            scrub: true,
-          },
-        }
-      );
-
-      gsap.fromTo(
-        statsRightRef.current,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          scrollTrigger: {
-            trigger: document.body,
-            start: '45% top',
-            end: '55% top',
-            scrub: true,
-          },
-        }
-      );
-      gsap.fromTo(
-        statsRightRef.current,
-        { opacity: 1 },
-        {
-          opacity: 0,
-          scrollTrigger: {
-            trigger: document.body,
-            start: '80% top',
-            end: '90% top',
-            scrub: true,
-          },
-        }
-      );
-
-      // Trust signals
-      gsap.fromTo(
-        trustSignalsRef.current,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          scrollTrigger: {
-            trigger: document.body,
-            start: '50% top',
-            end: '60% top',
-            scrub: true,
-          },
-        }
-      );
-      gsap.fromTo(
-        trustSignalsRef.current,
-        { opacity: 1 },
-        {
-          opacity: 0,
-          scrollTrigger: {
-            trigger: document.body,
-            start: '80% top',
-            end: '90% top',
-            scrub: true,
-          },
-        }
-      );
-
-      // CTA buttons fade out at end
+      // CTAs fade out at end
       gsap.fromTo(
         ctaRef.current,
         { opacity: 1 },
@@ -205,8 +137,8 @@ export default function OperatoryExperience() {
           opacity: 0,
           scrollTrigger: {
             trigger: document.body,
-            start: '70% top',
-            end: '85% top',
+            start: '75% top',
+            end: '88% top',
             scrub: true,
           },
         }
@@ -223,107 +155,82 @@ export default function OperatoryExperience() {
 
       {/* Fixed viewport stage */}
       <div className="fixed inset-0 w-full h-dvh overflow-hidden operatory-bg isolate">
-        {/* Subtle vignette for readability */}
-        <div
-          className="absolute inset-0 pointer-events-none z-[1]"
-          style={{
-            background: 'radial-gradient(ellipse at 50% 40%, transparent 0%, var(--bg-page) 85%)',
-          }}
-        />
-
         {/* Chair */}
         <ChairAssembly />
 
-        {/* Timeline on the left */}
-        <Timeline />
-
-        {/* Precision marquee */}
+        {/* Background marquee */}
         <PrecisionMarquee />
 
-        {/* Hero headline */}
+        {/* Hero headline — centered, large */}
         <div
           ref={heroRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-center z-10"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-center z-10 w-full px-6"
         >
-          <h1 className="font-display text-[clamp(2.5rem,14vw,9rem)] leading-[0.9] tracking-[-0.03em] text-gradient">
-            {COMPANY.name}
-            <br />
-            {COMPANY.tagline}
-          </h1>
-          <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] mt-4 text-[var(--text-secondary)]">
+          <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.35em] text-[var(--text-secondary)] mb-4">
             {COMPANY.subtitle}
           </p>
-        </div>
-
-        {/* Scroll-triggered headline */}
-        <div
-          ref={headlineRef}
-          className="absolute top-[15%] left-0 right-0 px-6 md:px-[8vw] text-center md:text-left pointer-events-none z-10"
-        >
-          <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
-            Moradabad · Since 2000
-          </p>
-          <h2 className="font-display text-[clamp(1.5rem,5vw,4rem)] leading-[1.1] max-w-[700px] mx-auto md:mx-0 text-[var(--text-primary)] drop-shadow-sm">
-            {COMPANY.headline}
-          </h2>
-          <p className="font-body text-sm md:text-base text-[var(--text-secondary)] max-w-[500px] mt-4 mx-auto md:mx-0">
+          <h1 className="font-display text-[clamp(2.8rem,12vw,8rem)] leading-[0.9] tracking-[-0.03em] text-[var(--text-primary)]">
+            {COMPANY.name}
+            <br />
+            <span className="text-[var(--accent-color)]">{COMPANY.tagline}</span>
+          </h1>
+          <p className="font-body text-sm md:text-base text-[var(--text-secondary)] mt-6 max-w-md mx-auto">
             {COMPANY.subheadline}
           </p>
         </div>
 
-        {/* Explosion copy */}
+        {/* Scroll hint */}
+        <div
+          ref={scrollHintRef}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 pointer-events-none z-10"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-secondary)]">Scroll</span>
+          <ChevronDown size={16} className="text-[var(--accent-color)] animate-bounce" />
+        </div>
+
+        {/* Scroll-triggered headline card — top left */}
+        <div
+          ref={headlineRef}
+          className="absolute top-[14%] left-6 md:left-[8vw] max-w-[520px] pointer-events-none z-10 opacity-0"
+        >
+          <div className="text-card">
+            <p className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
+              Moradabad · Since 2000
+            </p>
+            <h2 className="font-display text-[clamp(1.4rem,4vw,2.5rem)] leading-[1.1] text-[var(--text-primary)]">
+              {COMPANY.headline}
+            </h2>
+          </div>
+        </div>
+
+        {/* Explosion copy card — top right */}
         <div
           ref={explosionCopyRef}
-          className="absolute top-[12%] left-0 right-0 px-6 md:px-[8vw] text-center pointer-events-none z-10"
+          className="absolute top-[16%] right-6 md:right-[8vw] max-w-[420px] pointer-events-none z-10 opacity-0"
         >
-          <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
-            Exploded View
-          </p>
-          <h2 className="font-display text-[clamp(1.4rem,4vw,3rem)] leading-[1.15] max-w-[600px] mx-auto text-[var(--text-primary)] drop-shadow-sm">
-            Every product category was inside the chair the whole time.
-          </h2>
+          <div className="text-card text-right">
+            <p className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
+              Exploded View
+            </p>
+            <h2 className="font-display text-[clamp(1.3rem,3.5vw,2rem)] leading-[1.15] text-[var(--text-primary)]">
+              Every product category was inside the chair the whole time.
+            </h2>
+          </div>
         </div>
 
-        {/* Reassembly / contact copy */}
+        {/* Reassembly copy card — top center */}
         <div
           ref={reassemblyCopyRef}
-          className="absolute top-[12%] left-0 right-0 px-6 md:px-[8vw] text-center pointer-events-none z-10"
+          className="absolute top-[14%] left-1/2 -translate-x-1/2 max-w-[520px] w-[90%] md:w-auto pointer-events-none z-10 opacity-0"
         >
-          <p className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
-            Reassembly Complete
-          </p>
-          <h2 className="font-display text-[clamp(1.4rem,4vw,3rem)] leading-[1.15] max-w-[600px] mx-auto text-[var(--text-primary)] drop-shadow-sm">
-            Ready to equip your practice?
-          </h2>
-        </div>
-
-        {/* Floating stats labels */}
-        <div
-          ref={statsLeftRef}
-          className="absolute bottom-[18%] left-[8%] pointer-events-none hidden lg:block z-10"
-        >
-          <div className="holo-label">{STATS[0].value}{STATS[0].suffix} {STATS[0].label}</div>
-        </div>
-        <div
-          ref={statsRightRef}
-          className="absolute bottom-[28%] right-[10%] pointer-events-none hidden lg:block z-10"
-        >
-          <div className="holo-label">{STATS[1].value}{STATS[1].suffix} {STATS[1].label}</div>
-        </div>
-
-        {/* Trust signals band */}
-        <div
-          ref={trustSignalsRef}
-          className="absolute bottom-8 left-0 right-0 flex flex-wrap justify-center gap-4 md:gap-8 px-4 pointer-events-none z-10"
-        >
-          {TRUST_SIGNALS.map((signal, i) => (
-            <div key={signal} className="flex items-center gap-2">
-              {i > 0 && <span className="hidden md:inline text-[var(--text-secondary)]">·</span>}
-              <span className="font-body text-[10px] md:text-xs text-[var(--text-secondary)] uppercase tracking-wider">
-                {signal}
-              </span>
-            </div>
-          ))}
+          <div className="text-card text-center">
+            <p className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-[var(--accent-color)] mb-3">
+              Reassembly Complete
+            </p>
+            <h2 className="font-display text-[clamp(1.4rem,4vw,2.5rem)] leading-[1.1] text-[var(--text-primary)]">
+              Ready to equip your practice?
+            </h2>
+          </div>
         </div>
 
         {/* Fixed CTA buttons */}
@@ -336,7 +243,7 @@ export default function OperatoryExperience() {
             className="btn-primary inline-flex items-center justify-center gap-2 text-sm py-2.5 px-5"
           >
             <Phone size={14} />
-            Call {COMPANY.phone}
+            {COMPANY.phone}
           </a>
           <a
             href={`https://wa.me/${COMPANY.whatsapp}`}
@@ -350,7 +257,10 @@ export default function OperatoryExperience() {
         </div>
       </div>
 
-      {/* Contact tray - appears at final scroll phase */}
+      {/* Timeline on left */}
+      <Timeline />
+
+      {/* Contact tray */}
       <ContactTray />
     </div>
   );
