@@ -2,15 +2,11 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import Navigation from './sections/Navigation';
-import Hero from './sections/Hero';
-import About from './sections/About';
-import Products from './sections/Products';
-import Craftsmanship from './sections/Craftsmanship';
-import Gallery from './sections/Gallery';
-import Trust from './sections/Trust';
-import Contact from './sections/Contact';
-import Footer from './sections/Footer';
+import OperatoryExperience from './components/OperatoryExperience';
+import XRayToggle from './components/XRayToggle';
+import CuringLightOverlay from './components/CuringLightOverlay';
+import HapticRipple from './components/HapticRipple';
+import ThumbNav from './components/ThumbNav';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,23 +32,17 @@ function App() {
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+      ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
 
   return (
     <div className="relative">
-      <Navigation />
-      <main>
-        <Hero />
-        <About />
-        <Products />
-        <Craftsmanship />
-        <Gallery />
-        <Trust />
-        <Contact />
-      </main>
-      <Footer />
+      <OperatoryExperience />
+      <XRayToggle />
+      <CuringLightOverlay />
+      <HapticRipple />
+      <ThumbNav />
     </div>
   );
 }
